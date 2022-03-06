@@ -6,7 +6,6 @@ from database.classes.cDB import engine, Users, Channels
 
 # СОЗДАНИЕ СЕССИИ
 session = sessionmaker(bind=engine)()
-print("READY")
 
 async def create_new_user(userid, username, onoff):
     try:
