@@ -1,7 +1,8 @@
 from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 
-engine = create_engine("sqlite:///database/parser.db", echo=True)
+
+engine = create_engine("sqlite:///bot/database/parser.db", echo=True)
 base = declarative_base()
 
 
@@ -22,6 +23,15 @@ class Users(base):
 
     on_off = Column(String)
     parse_channels = Column(String)
+
+
+class Channels(base):
+    __tablename__ = 'channels'
+
+    id = Column(Integer, primary_key=True)
+    href = Column(String, unique=True)
+    users = Column(String)
+
 
 # СОЗДАНИЕ БАЗЫ ПО СХЕМЕ
 # base.metadata.create_all(engine)
