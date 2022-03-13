@@ -1,14 +1,15 @@
 import os
 import sys
-
+import time
 import aiogram.types
 from aiogram import types, Dispatcher, Bot
 from aiogram.dispatcher import FSMContext
 sys.path.append('bot')
+from database.sess import get_users_by_link
 from database.sess import create_new_user, check_on_off, switch_on_off, check_parse_channels, check_channel, \
     add_channels, reemove_channels
 from python.States.StatesClasses import Adding, Removing
-from python.config import bToken, admin_chat
+from python.config import bToken, admin_chat, admin_id
 
 bot = Bot(token=bToken)
 
@@ -38,7 +39,7 @@ async def main_menu(message: types.Message):
                          f"P.S. now - {await check_on_off(message.from_user.id)}\n\n"
                          "My creator is @darrso")
     await message.answer_sticker(r'CAACAgIAAxkBAAIKrmHbJw6ckgI0IrCLe_TJrbUyCJ_xAALRAAM27BsFCW1Sl32PAAEsIwQ')
-
+ 
 
 async def switch_parametr(message: types.Message):
     text = (message.text).replace("/", "")
@@ -115,6 +116,25 @@ async def removing_channel(message: types.Message, state: FSMContext):
     await state.finish()
 
 
+async def new_post(message: types.Message):
+    try:
+        time.sleep(2);
+        if message.chat.id == admin_chat:
+            if message.text[0:9] != "/NEW_POST":
+                pass
+            else:
+                messageid = message.message_id + 1
+                users = await get_users_by_link(message.text[10:])
+                if users:
+                    for i in users:
+                        await bot.forward_message(chat_id=int(i), from_chat_id=(admin_chat), message_id=messageid)
+                else:
+                    pass
+    except:
+        pass
+        
+
+
 def register_message_handlers(dp: Dispatcher):
     dp.register_message_handler(start_command, commands="start")
     dp.register_message_handler(main_menu, commands="menu")
@@ -124,3 +144,4 @@ def register_message_handlers(dp: Dispatcher):
     dp.register_message_handler(adding_channel, state=Adding.first)
     dp.register_message_handler(remove_channel, commands='remove_parse_channel')
     dp.register_message_handler(removing_channel, state=Removing.first)
+    dp.register_channel_post_handler(new_post, lambda message: message.text[0:9] == "/NEW_POST")

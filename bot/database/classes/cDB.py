@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 
-
+# sqlite:////home/darrso/parse_channels/bot/database/parser.db
 engine = create_engine("sqlite:///bot/database/parser.db", echo=True)
 base = declarative_base()
 
