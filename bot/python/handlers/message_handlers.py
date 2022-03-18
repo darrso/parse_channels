@@ -23,7 +23,7 @@ async def start_command(message: types.Message):
     await message.answer_sticker(r'CAACAgIAAxkBAAIKpWHbI3SOA4e7-YIUHXhsSBNwUoWTAAIZAAMB9dsukz3Jt5gbPdEjBA')
 
     # ДОБАВЛЕНИЕ НОВОГО ПОЛЬЗОВАТЕЛЯ В БАЗУ ДАННЫХ
-    await create_new_user(message.from_user.id, message.from_user.username, 'off')
+    await create_new_user(message.from_user.id, message.from_user.username, 'on')
 
 
 async def main_menu(message: types.Message):

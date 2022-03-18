@@ -141,9 +141,15 @@ async def reemove_channels(userid, parametr):
 
 async def get_users_by_link(link):
     try:
+        data = []
         q = session.query(Channels).filter_by(href=link)
         res = q.first()
-        data = res.users.split('\n')
+        list_of_users = res.users.split('\n')
+        for user in list_of_users:
+            quer = session.query(Users).filter_by(user_id=user)
+            res_sec = quer.first()
+            if res_sec.on_off == "on":
+                data.append(user)
         return data
     except:
         return False

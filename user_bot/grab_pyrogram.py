@@ -26,12 +26,14 @@ async def adding_me(Client, message):
 async def echo(Client, message):
     if (str(time.strftime("%d.%m.%g %H:%M", time.gmtime())) == str(time.strftime("%d.%m.%g %H:%M",time.gmtime(message.date)))):
         chat_data = (await Client.get_chat(message.chat.id))
-        print(chat_data)
         chat_name =  chat_data["username"]
         if chat_name is None:
             link = chat_data["invite_link"]
             if link is None:
-                link = (((chat_data["pinned_message"])["caption_entities"])[1])["url"]
+                try:
+                    link = (((chat_data["pinned_message"])["caption_entities"])[1])["url"]
+                except:
+                    pass
         else:
             link = "https://t.me/" + chat_name
         try:
@@ -50,5 +52,4 @@ async def echo(Client, message):
                 await message.forward(int(admin_chat))
         except PendingRollbackError:
             await roolback()
-
 Client.run()

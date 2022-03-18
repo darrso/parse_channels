@@ -11,7 +11,7 @@ class Posts(base):
 
     id = Column(Integer, primary_key=True)
     public = Column(String)
-    post_id = Column(Integer, unique=True)
+    post_id = Column(Integer)
 
 
 class Users(base):
