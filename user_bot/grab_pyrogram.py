@@ -1,4 +1,3 @@
-from decimal import DivisionByZero
 import sys
 import time
 from pyrogram import Client, filters
